@@ -24,6 +24,19 @@ app.get('/notes', (req,res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 })
 
+//GET route for api/notes
+app.get('/api/notes', (req,res) => {
+    console.info(`${req.method} request received for notes`);
+    readFromFile('./db/notes.json').then((data) => res.json(JSON.parse(data)));
+})
+
+app.post('/api/notes', (req,res) => {
+    console.info(`${req.method} request received for notes`);
+    const {noteTitle, noteText} = req.body;
+    if (req.body) {
+        
+    }
+})
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
