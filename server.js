@@ -1,3 +1,4 @@
+const { json } = require("express");
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -35,55 +36,32 @@ app.post("/api/notes", (req, res) => {
   //logs that post request was received
   console.info(`${req.method} request received for notes`);
   //destructuring assignment for the items in req.body
-  const { title, text } = req.body;
-  //if all the required properties are present
-  if (title && text) {
-    //create a variable for the object that we will save
-    const newNote = {
-      title,
-      text,
-    };
-    //obtain existing notes
-    fs.readFileSync("./db/db.json", "utf8", (err, data) => {
-      //logs error if there is one
-      if (err) {
-        console.log(err);
-      } else {
-        //convert string into JSON format
-        const parsedNotes = JSON.parse(data);
-        console.log(parsedNotes)
-        //Adds a new note
-        parsedNotes.push(newNote);
-        console.log(newNote)
-        console.log(parsedNotes)
-        //writes updated notes back to file
-        fs.writeFile(
-          "./db/db.json",
-          //stringifying the data, null means we are not using a replacer, the 4 is a space parameter, and it adds indentation
-          JSON.stringify(parsedNotes, null, 4),
-          //if there is a write error, console.log it, else console.info 'success
-          (writeErr) =>
+  const { text, title} = req.body;
+  if (text && title) {
+    const newNote = {text,title}
+    fs.readFileSync('./db/db.json', 'utf8', (err,data) => {
+        if (err) {
+            console.error(err)
+        } else {
+            const parsedNotes = JSON.parse(data);
+            parsedNotes.push(newNote)
+            fs.writeFileSync('./db/db.json',
+            JSON.stringify(parsedNotes, null, 4),
+            (writeErr) =>
             writeErr
-              ? console.error(writeErr)
-              : console.info("succesfully updated reviews")
-        );
-      }
+            ? console.error(writeErr)
+            : console.info('success')
+            );
+        };
     });
     const response = {
-      status: "success",
-      body: newNote,
+        status: 'success',
+        body: newNote,
     };
-    console.log(response);
-    res.status(201).json(response);
-  } else {
-    res.status(500).json("Error in posting review");
-  }
-});
-
-app.delete("/api/notes", (req, res) => {
-  console.info(`${req.method} request received for notes`);
-});
-
+    res.json(newNote)
+    }
+  })
+  
 // ********HTML ROUTES***********
 // HTML home route
 app.get("/", (req, res) => {

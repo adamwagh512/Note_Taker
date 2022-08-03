@@ -182,3 +182,8 @@ if (window.location.pathname === '/notes') {
 
 getAndRenderNotes();
 
+//Cooke, Andrew
+Wagh, Adam
+Ayres, Robert
+Espinoza, Jose
+Rodriguez, Jaden
