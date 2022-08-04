@@ -5,7 +5,7 @@ const path = require("path");
 const util = require("util");
 const notes = require("./db/db.json");
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 const app = express();
 
 // Middleware for parsing JSON and urlencoded form data. Middleware is anything that sits between the front end and the server and accepts requests and sends responses
